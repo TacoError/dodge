@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Dodge</title>
+    <link rel="stylesheet" href="style/style.css" />
+</head>
+
+<body>
+    <div id="pre-game">
+        <div id="initial">
+            <h1>Dodge</h1>
+            <p1>Evades like dodging game.</p1> <br>
+            <input id="username" placeholder="username"> <br>
+            <input id="password" placeholder="password"> <br>
+            <button onclick="register()">Register</button>
+            <button onclick="login()">Login</button> <br>
+        </div>
+        <p1 id="err"></p1>
+        <div id="hero-selection">
+            <h1>Hero Selection</h1>
+            <p1>Select a hero to use.</p1>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/notepack.io@2.3.0/dist/notepack.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="js/io.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/canvasUtil.js"></script>
+    <script src="js/login.js"></script>
+</body>

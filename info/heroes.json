@@ -1,0 +1,14 @@
+{
+    "MagMax": {
+        "color": "red",
+        "powerOne": "Go faster than other players.",
+        "powerTwo": "Make yourself invincible, but you cannot move.",
+        "unlockBy": "Free"
+    },
+    "BlueHero": {
+        "color": "blue",
+        "powerOne": "Freeze enemies around you.",
+        "powerTwo": "Teleport forward.",
+        "unlockBy": "Free"
+    }
+}

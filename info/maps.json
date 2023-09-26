@@ -1,0 +1,19 @@
+{
+    "Corrupted Core": {
+        "color": "grey",
+        "levels": [
+            {
+                "width": 1000,
+                "height": 500,
+                "enemies": [
+                    {
+                        "type": "regular",
+                        "speed": 3,
+                        "amount": 20,
+                        "radius": 15
+                    }
+                ]
+            }
+        ]
+    }
+}
