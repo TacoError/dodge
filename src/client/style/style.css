@@ -4,4 +4,15 @@
 
 body {
     overflow: hidden;
+    margin: 0 0;
+}
+
+#pre-game {
+    text-align: center;
+}
+
+#heroes {
+    display: inline-flex;
+    grid-template-columns: 1fr 1fr;
+    
 }

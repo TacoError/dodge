@@ -2,6 +2,7 @@ const Maps = require("../../../info/maps.json");
 const Map = require("./map.js");
 const Level = require("./level.js");
 const Regular = require("../entities/enemies/regular.js");
+const mathUtils = require("../utils/mathUtils.js");
 
 class MapsManager {
 
@@ -10,21 +11,47 @@ class MapsManager {
 
         for (const mapName in Maps) {
             const mapInfo = Maps[mapName];
-            const map = new Map(mapInfo["color"], mapName, []);
+        
+            const map = new Map(mapInfo["color"], mapName, [], this);
+            let leveln = 0;
             for (const levelInfo of mapInfo["levels"]) {
-                const level = new Level(map, levelInfo["width"], levelInfo["height"], []);
+                const w = levelInfo["width"];
+                const h = levelInfo["height"];
+                const level = new Level(map, w, h, leveln, []);
                 for (const enemy of levelInfo["enemies"]) {
                     if (enemy["type"] == "regular") {
                         for (let i = 0; i <= enemy["amount"]; i++) {
-                            level.entities.push(new Regular(level, 100, 100, enemy["radius"], enemy["speed"]));
+                            level.entities.push(new Regular(level, mathUtils.randomIntFromInterval(150, w - 150), mathUtils.randomIntFromInterval(0, h), enemy["radius"], enemy["speed"]));
                         }
                         continue;
                     }
                 }
+                leveln++;
+                this.maps.push(map);
                 level.tick();
                 map.addLevel(level);
             }
             console.log(`Map loaded: ${mapName}.`);
+        }
+    }
+
+    tick() {
+        for (const map of this.maps) {
+            for (const l in map.levels) {
+                const level = map.levels[l];
+                //if (level.players < 1) {
+                //    continue;
+                //}
+                level.tick();
+            }
+        }
+    }
+
+    getMap(name) {
+        for (const map of this.maps) {
+            if (map.name == name) {
+                return map;
+            }
         }
     }
 
@@ -34,7 +61,7 @@ class MapsManager {
 
     getMapAfter(name) {
         let next = false;
-        for (const m of maps) {
+        for (const m of this.maps) {
             if (next) {
                 return m;
             }
@@ -48,16 +75,16 @@ class MapsManager {
 
     getMapBefore(name) {
         let last = null;
-        for (const m of maps) {
-            if (m == name) {
-                if (last == null) {
-                    return this.maps[0];
+        for (const m of this.maps) {
+            if (m.name === name) {
+                if (last === null) {
+                    return this.maps[this.maps.length - 1];
                 }
                 return last;
             }
             last = m;
         }
-        return last;
+        return this.maps[0];
     }
     
 };

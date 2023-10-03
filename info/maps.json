@@ -3,8 +3,25 @@
         "color": "grey",
         "levels": [
             {
-                "width": 1000,
-                "height": 500,
+                "width": 1500,
+                "height": 800,
+                "enemies": [
+                    {
+                        "type": "regular",
+                        "speed": 3,
+                        "amount": 20,
+                        "radius": 15
+                    }
+                ]
+            }
+        ]
+    },
+    "Beans": {
+        "color": "brown",
+        "levels": [
+            {
+                "width": 1500,
+                "height": 800,
                 "enemies": [
                     {
                         "type": "regular",

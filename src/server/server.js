@@ -7,14 +7,19 @@ const notepack = require("notepack");
 const accountUtils = require("./utils/accountUtils.js");
 const heroes = require("../../info/heroes.json");
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4001;
 
 app.use(express.static("./src/client"));
 server.listen(port);
 
-const MapManager = require("./maps/mapsManager.js");
+const MapManager = new (require("./maps/mapsManager.js"));
+const Entity = require("./entities/entity.js");
 const preLoginInformation = {};
 const socketIDToEntity = new Map();
+const MagMax = require("./heroes/types/MagMax.js");
+const namesToClass = {
+    "MagMax": MagMax
+};
 
 io.on("connection", (socket) => {
     console.log(`Connection made ${socket.id}`);
@@ -71,8 +76,48 @@ io.on("connection", (socket) => {
             send("err", {color: "red", info: "You do not have that hero."});
             return;
         }
-        send("startGame");
+
+        const map = MapManager.getMap("Corrupted Core");
+        send("mapInfo", notepack.encode(map.toJSON()));
+        const entity = new Entity(
+            map.getLevel(0), 
+            10, 
+            10, 
+            15, 
+            "red", 
+            5, 
+            preLoginInformation[socket.id].username, 
+            true, 
+            socket, 
+            io
+        );
+        entity.hero = new (namesToClass[hero])(entity);
+        entity.color = entity.hero.color;
+        entity.colorModifier.initialColor = entity.hero.color;
+        map.getLevel(0).entities.push(entity);
+        socketIDToEntity.set(socket.id, entity);
+        send("startGame", notepack.encode(toString(`${entity.id}`)));
+    });
+
+    socket.on("inputs", (i) => {
+        const d = notepack.decode(i);
+        if (!socketIDToEntity.has(socket.id)) {
+            return;
+        }
+        socketIDToEntity.get(socket.id).inputs = d;
     });
 });
 
 console.log(`Server listening at :${port}`);
+
+setInterval(() => {
+    MapManager.tick();
+
+    for (let [sid, entity] of socketIDToEntity) {
+        entity.processKeyMovement();
+        io.to(sid).emit("yourPos", notepack.encode({x: entity.x, y: entity.y}));
+        io.to(sid).emit("levelInfo", notepack.encode(entity.parent.getInfo()));
+        io.to(sid).emit("heroInfo", notepack.encode(entity.hero.toJSON()))
+    }
+    
+}, 25);

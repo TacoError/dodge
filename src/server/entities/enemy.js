@@ -10,6 +10,7 @@ class Enemy extends Entity {
         if (entity instanceof Enemy) {
             return;
         }
+        
     }
 
     doAutomaticMove() {}

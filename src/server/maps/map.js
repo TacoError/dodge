@@ -1,9 +1,10 @@
 class Map {
 
-    constructor(color, name, levels) {
+    constructor(color, name, levels, mgr) {
         this.color = color;
         this.name = name;
         this.levels = levels;
+        this.mgr = mgr;
     }
 
     toJSON() {
@@ -13,15 +14,19 @@ class Map {
         }
     }
 
+    getLevel(c) {
+        return this.levels[c];
+    }
+
     addLevel(l) {
         this.levels.push(l);
     }
 
-    getNextMap(current) {
+    getNextLevel(current) {
         return this.levels[current + 1];
     }
 
-    getMapBefore(current) {
+    getLevelBefore(current) {
         return this.levels[current - 1];
     }
 

@@ -10,6 +10,14 @@ class Hero {
         this.currentPower2CD = 0;
     }
 
+    toJSON() {
+        return {
+            n: this.name,
+            r1: this.power1CD - this.getTimeElapsed("0"),
+            r2: this.power2CD - this.getTimeElapsed("1")
+        };
+    }
+
     whenUsePowerOne() {}
 
     whenUsePowerTwo() {}
@@ -30,7 +38,7 @@ class Hero {
     }
 
     isCoolDownUpFor(which) {
-
+        return this.getTimeElapsed(which) > (which == "0" ? this.power1CD : this.power2CD);
     }
 
     tick() {}

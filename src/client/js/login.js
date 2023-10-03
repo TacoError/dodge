@@ -31,7 +31,7 @@ socket.on("heroes", (e) => {
         object.style.padding = "20px";
         object.style.width = "300px";
         object.style.outline = `3px dotted ${data.color}`;
-        document.getElementById("hero-selection").appendChild(object);
+        document.getElementById("heroes").appendChild(object);
     }
 });
 
@@ -53,9 +53,11 @@ function getLoginInformation() {
 }
 
 function register() {
+    lastUsedName = document.getElementById("username").value;
     socket.emit("register", getLoginInformation());
 }
 
 function login() {
+    lastUsedName = document.getElementById("username").value;
     socket.emit("login", getLoginInformation());
 }
