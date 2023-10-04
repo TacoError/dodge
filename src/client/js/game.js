@@ -1,9 +1,13 @@
+
 let canvas, ctx;
 let myEntityInfo = {};
 let myPos = {x: 0, y: 0};
 socket.on("yourPos", (e) => {
      myPos = notepack.decode(e);
  })
+socket.on("disconnect", () => {
+    window.location.reload();
+});
 let mapInfo = {};
 socket.on("mapInfo", (e) => {
     mapInfo = notepack.decode(e);
@@ -67,6 +71,11 @@ function animationLoop() {
                 myEntityInfo = e;
                 continue;
             }
+            if (e.d > 0) {
+                circle(ctx, e.x, e.y, e.r, "gray", true);
+                text(ctx, e.x, e.y, `${e.t} (DEAD ${e.d / 40})`, e.r);
+                continue;
+            }
             circle(ctx, e.x, e.y, e.r, e.c, e.t == "" ? true : false);
             text(ctx, e.x, e.y, e.t, e.r);
         }  
@@ -75,8 +84,14 @@ function animationLoop() {
     ctx.restore();
 
     if ("x" in myEntityInfo) {
-        circle(ctx, canvas.width / 2, canvas.height / 2,  myEntityInfo.r, myEntityInfo.c, myEntityInfo.t == "" ? true : false);
-        text(ctx, canvas.width / 2, canvas.height / 2, myEntityInfo.t, myEntityInfo.r);
+        if (myEntityInfo.d > 0) {
+            
+            circle(ctx, canvas.width / 2, canvas.height / 2,  myEntityInfo.r, "gray", myEntityInfo.t == "" ? true : false);
+            text(ctx, canvas.width / 2, canvas.height / 2, `${myEntityInfo.t} (DEAD ${myEntityInfo.d / 40})`, myEntityInfo.r);
+        } else {
+            circle(ctx, canvas.width / 2, canvas.height / 2,  myEntityInfo.r, myEntityInfo.c, myEntityInfo.t == "" ? true : false);
+            text(ctx, canvas.width / 2, canvas.height / 2, myEntityInfo.t, myEntityInfo.r);
+        }
     }
 
     text(ctx, canvas.width / 2, 80, `Map: ${mapInfo.n} (${levelInfo.n + 1})`, 30, "30px");

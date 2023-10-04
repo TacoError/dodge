@@ -13,6 +13,18 @@
                         "radius": 15
                     }
                 ]
+            },
+            {
+                "width": 1500,
+                "height": 800,
+                "enemies": [
+                    {
+                        "type": "regular",
+                        "speed": 3,
+                        "amount": 30,
+                        "radius": 25
+                    }
+                ]
             }
         ]
     },

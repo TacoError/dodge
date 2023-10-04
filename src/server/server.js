@@ -7,7 +7,7 @@ const notepack = require("notepack");
 const accountUtils = require("./utils/accountUtils.js");
 const heroes = require("../../info/heroes.json");
 
-const port = process.env.PORT || 4001;
+const port = process.env.PORT || 8000;
 
 app.use(express.static("./src/client"));
 server.listen(port);

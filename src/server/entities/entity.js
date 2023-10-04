@@ -3,6 +3,7 @@ const IdGen = require("../utils/idGen.js");
 const notepack = require("notepack");
 const SpeedModifier = require("./modifier/speedModifier.js");
 const ColorModifier = require("./modifier/colorModifier.js");
+const Enemy = require("./enemy.js");
 
 class Entity {
 
@@ -34,7 +35,7 @@ class Entity {
             c: this.colorModifier.getColor(),
             t: this.text,
             r: this.radius,
-            i: this.id,
+            //i: this.id,
             d: this.deadFor
         };
     }
@@ -47,13 +48,31 @@ class Entity {
         return SAT.testCircleCircle(this.getCollider(), e.getCollider());
     }
 
-    whenCollide(entity) {}
+    whenCollide(entity) {
+        if (this.text == "") {
+            if (this.deadFor > 0) {
+                this.deadFor = 0;
+            }
+            return;
+        }
+        if (this.deadFor > 0) {
+            return;
+        }
+        this.deadFor = 40 * 60;
+    }
 
     scktsnd(w, d) {
         this.io.to(this.socket.id).emit(w, notepack.encode(d));
     }
     
     processKeyMovement() {
+        if (this.deadFor > 0) {
+            this.deadFor--;
+            if (this.deadFor < 1) {
+                this.socket.disconnect();
+            }
+            return;
+        }
         if (this.inputs.includes("shift")) {
             this.speedMultiplier.addModifier(-0.5, 2);
         }
@@ -82,8 +101,25 @@ class Entity {
             }
         }
 
+        if (this.x < (50 + this.radius) && this.parent.num !== 0) {
+            const lastLevel = this.parent.parent.getLevel(this.parent.num - 1);
+            this.parent.removeEntity(this);
+            lastLevel.entities.push(this);
+            this.parent = lastLevel;
+            this.x = lastLevel.width - (50 + this.radius);
+            this.scktsnd("mapInfo", this.parent.parent.toJSON());
+        }
+
         if (this.x > (this.parent.width - (50 + this.radius))) {
-            const nextLevel = this.parent.parent.getLevel(this.parent.num)
+            const nextLevel = this.parent.parent.getLevel(this.parent.num + 1);
+            if (nextLevel === null) {
+                return;
+            }
+            this.parent.removeEntity(this);
+            nextLevel.entities.push(this);
+            this.parent = nextLevel;
+            this.x = 50 + this.radius;
+            this.scktsnd("mapInfo", this.parent.parent.toJSON());
         }
 
         if (this.parent.num == 0) {

@@ -15,6 +15,9 @@ class Map {
     }
 
     getLevel(c) {
+        if ((this.levels.length - 1) < c) {
+            return null;
+        }
         return this.levels[c];
     }
 
