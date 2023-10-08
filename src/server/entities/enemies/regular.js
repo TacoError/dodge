@@ -10,8 +10,12 @@ class RegularEnemy extends Enemy {
     }  
 
     doAutomaticMove() {
-        this.x += this.vx * this.speed;
-        this.y += this.vy * this.speed;
+        this.tickAll();
+        if (this.immobileFor > 0) {
+            return;
+        }
+        this.x += this.vx * this.speedMultiplier.current;
+        this.y += this.vy * this.speedMultiplier.current;
         if (this.x < (150 + this.radius)) {
             this.x = 150 + this.radius;
             this.vx = -this.vx;
@@ -28,6 +32,11 @@ class RegularEnemy extends Enemy {
             this.y = this.parent.height - this.radius;
             this.vy = -this.vy;
         }
+    }
+
+    repel() {
+        this.vx = -this.vx;
+        this.vy = -this.vy;
     }
 
 };

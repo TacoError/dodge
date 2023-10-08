@@ -30,6 +30,19 @@ class Level {
         this.entities = newEntityList;
     }
 
+    getEntitiesWithin(x, y, pixelDistance) {
+        const within = [];
+        for (const e of this.entities) {
+            if (this.getDistance({x: x, y: y}, e) < pixelDistance) {
+                if (e.text !== "") {
+                    continue;
+                }
+                within.push(e);
+            }
+        }
+        return within;
+    }
+
     tick() {
         const newEntityList = [];
         const entityDataList = [];
@@ -69,6 +82,13 @@ class Level {
     getInfo() {
         return this.currentInfo;
     }
+
+    getDistance(vector1, vector2) {
+        const dx = vector1.x - vector2.x;
+        const dy = vector1.y - vector2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        return dist;
+      }
 
 };
 

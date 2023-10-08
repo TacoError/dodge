@@ -17,8 +17,12 @@ const Entity = require("./entities/entity.js");
 const preLoginInformation = {};
 const socketIDToEntity = new Map();
 const MagMax = require("./heroes/types/MagMax.js");
+const Freezer = require("./heroes/types/Freezer.js");
+const Morpher = require("./heroes/types/Morpher.js");
 const namesToClass = {
-    "MagMax": MagMax
+    "MagMax": MagMax,
+    "Freezer": Freezer,
+    "Morpher": Morpher
 };
 
 io.on("connection", (socket) => {
@@ -77,13 +81,9 @@ io.on("connection", (socket) => {
             return;
         }
 
-        const map = MapManager.getMap("Corrupted Core");
+        const map = MapManager.getMap("Hub");
         send("mapInfo", notepack.encode(map.toJSON()));
-        const entity = new Entity(
-            map.getLevel(0), 
-            10, 
-            10, 
-            15, 
+        const entity = new Entity(map.getLevel(0), 10, 10, 15, 
             "red", 
             5, 
             preLoginInformation[socket.id].username, 

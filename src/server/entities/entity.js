@@ -3,7 +3,7 @@ const IdGen = require("../utils/idGen.js");
 const notepack = require("notepack");
 const SpeedModifier = require("./modifier/speedModifier.js");
 const ColorModifier = require("./modifier/colorModifier.js");
-const Enemy = require("./enemy.js");
+const RadiusModifier = require("./modifier/radiusModifier.js");
 
 class Entity {
 
@@ -26,6 +26,13 @@ class Entity {
         this.speedMultiplier = new SpeedModifier();
         this.deadFor = 0;
         this.colorModifier = new ColorModifier(color);
+        this.immobile = false;
+        this.canTakeDamage = true;
+        this.previousInputs = [];
+        this.immobileFor = 0;
+        this.lastDirection = {x: 0, y: 0};
+        this.radiusModifier = new RadiusModifier(radius);
+        
     }
 
     toJSON() {
@@ -34,14 +41,14 @@ class Entity {
             y: this.y,
             c: this.colorModifier.getColor(),
             t: this.text,
-            r: this.radius,
+            r: this.radiusModifier.currentRadius,
             //i: this.id,
             d: this.deadFor
         };
     }
 
     getCollider() {
-        return new SAT.Circle(new SAT.Vector(this.x, this.y), this.radius);
+        return new SAT.Circle(new SAT.Vector(this.x, this.y), this.radiusModifier.currentRadius);
     }
 
     collidesWith(e) {
@@ -49,22 +56,36 @@ class Entity {
     }
 
     whenCollide(entity) {
-        if (this.text == "") {
+        if (this.text !== "" && entity.text !== "") {
             if (this.deadFor > 0) {
                 this.deadFor = 0;
             }
-            return;
         }
         if (this.deadFor > 0) {
             return;
         }
-        this.deadFor = 40 * 60;
+        if (entity.text == "" && this.canTakeDamage) {
+            this.deadFor = 40 * 60;
+        }
     }
 
     scktsnd(w, d) {
         this.io.to(this.socket.id).emit(w, notepack.encode(d));
     }
     
+    tickAll() {
+        this.speedMultiplier.tick();
+        this.colorModifier.tick();
+        this.tickImmobile();
+        this.radiusModifier.tick();
+    }
+
+    tickImmobile() {
+        if (this.immobileFor > 0) {
+            this.immobileFor--;
+        }
+    }
+
     processKeyMovement() {
         if (this.deadFor > 0) {
             this.deadFor--;
@@ -78,19 +99,42 @@ class Entity {
         }
         this.speedMultiplier.tick();
         this.colorModifier.tick();
+        this.radiusModifier.tick();
 
         const keys = this.inputs;
-        if (keys.includes("w")) this.y -= this.speed * this.speedMultiplier.getCurrentModifier();
-        if (keys.includes("a")) this.x -= this.speed * this.speedMultiplier.getCurrentModifier();
-        if (keys.includes("s")) this.y += this.speed * this.speedMultiplier.getCurrentModifier();
-        if (keys.includes("d")) this.x += this.speed * this.speedMultiplier.getCurrentModifier();
+        if (!this.immobile) {
+            const speed = this.speed * this.speedMultiplier.getCurrentModifier();
+            if (keys.includes("w")) {
+                this.y -= this.speed * this.speedMultiplier.getCurrentModifier();
+                this.lastDirection.y = -1;
+            }
+            if (keys.includes("a")) {
+                this.x -= this.speed * this.speedMultiplier.getCurrentModifier();
+                this.lastDirection.x = -1;
+            }
+            if (keys.includes("s")) {
+                this.y += this.speed * this.speedMultiplier.getCurrentModifier();
+                this.lastDirection.y = 1;
+            }
+            if (keys.includes("d")) {
+                this.x += this.speed * this.speedMultiplier.getCurrentModifier();
+                this.lastDirection.x = 1;
+            }
+            if (!keys.includes("a") && !keys.includes("d")) {
+                this.lastDirection.x = 0;
+            }
+            if (!keys.includes("s") && !keys.includes("w")) {
+                this.lastDirection.y = 0;
+            }
+        }
 
-        if (keys.includes("j")) {
+        if (!keys.includes("j") && this.previousInputs.includes("j")) {
             this.hero.whenUsePowerOne();
         }
-        if (keys.includes("k")) {
-            this.herp.whenUsePowerTwo();
+        if (!keys.includes("k") && this.previousInputs.includes("k")) {
+            this.hero.whenUsePowerTwo();
         }
+        this.previousInputs = keys;
 
         const collider = this.getCollider();
         for (const border of this.parent.borders) {

@@ -4,6 +4,7 @@ class ColorModifier {
         this.initialColor = initialColor;
         this.modifierColor = "";
         this.modifierLength = 0;
+        this.initialColorHold = initialColor;
     }
 
     tick() {

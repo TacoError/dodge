@@ -13,8 +13,8 @@
     },
     "Morpher": {
         "color": "green",
-        "powerOne": "Repel enemies with projectiles",
-        "powerTwo": "Shrink enemies with projectiles",
+        "powerOne": "Repel enemies around you.",
+        "powerTwo": "Shrink enemies around you.",
         "unlockBy": "Free"
     }
 }

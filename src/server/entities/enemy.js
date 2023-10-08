@@ -15,6 +15,8 @@ class Enemy extends Entity {
 
     doAutomaticMove() {}
 
+    repel() {}
+
 };
 
 module.exports = Enemy;

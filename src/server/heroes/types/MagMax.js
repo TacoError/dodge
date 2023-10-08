@@ -16,7 +16,19 @@ class MagMax extends Hero {
     }
 
     whenUsePowerTwo() {
-        
+        if (!this.isCoolDownUpFor("1")) {
+            return;
+        }
+        if (this.entity.immobile) {
+            this.entity.immobile = false;
+            this.entity.canTakeDamage = false;
+            this.entity.colorModifier.initialColor = this.entity.colorModifier.initialColorHold;
+            this.setCooldown("1");
+            return;
+        }
+        this.entity.immobile = true;
+        this.entity.canTakeDamage = false;
+        this.entity.colorModifier.initialColor = "gray";
     }
 
 };

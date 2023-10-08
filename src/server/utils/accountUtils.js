@@ -10,7 +10,7 @@ module.exports = {
     register: (username, password) => {
         const salt = crypto.randomBytes(16).toString("hex");
         db.set(username, {
-            "heroes": ["MagMax"],
+            "heroes": ["MagMax", "Freezer", "Morpher"],
             "winPoints": 0,
             "cosmetics": [],
             "login": {
