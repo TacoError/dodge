@@ -31,7 +31,7 @@ body {
 }
 
 #chats {
-    height: 170px;
+    height: 165px;
     overflow: auto;
     display: flex;
     flex-direction: column-reverse;

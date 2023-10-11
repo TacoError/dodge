@@ -25,7 +25,7 @@ class SpeedModifier {
                 continue;
             }
             newRunningArray.push(o);
-            newCurrent += o.modifier;
+            newCurrent *= o.modifier;
         }
         this.running = newRunningArray;
         this.current = newCurrent;

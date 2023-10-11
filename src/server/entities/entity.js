@@ -23,7 +23,7 @@ class Entity {
         this.io = io;
         this.socket = socket;
         this.hero = hero;
-        this.speedMultiplier = new SpeedModifier();
+        this.speedMultiplier = new SpeedModifier(); // speed modifier goes by multiplication
         this.deadFor = 0;
         this.colorModifier = new ColorModifier(color);
         this.immobile = false;
@@ -32,7 +32,7 @@ class Entity {
         this.immobileFor = 0;
         this.lastDirection = {x: 0, y: 0};
         this.radiusModifier = new RadiusModifier(radius);
-        
+        this.isModifierEnemy = false;
     }
 
     toJSON() {
@@ -56,6 +56,9 @@ class Entity {
     }
 
     whenCollide(entity) {
+        if (entity.isModifierEnemy) {
+            return;
+        }
         if (this.text !== "" && entity.text !== "") {
             if (this.deadFor > 0) {
                 this.deadFor = 0;
@@ -95,7 +98,7 @@ class Entity {
             return;
         }
         if (this.inputs.includes("shift")) {
-            this.speedMultiplier.addModifier(-0.5, 2);
+            this.speedMultiplier.addModifier(0.5, 2);
         }
         this.speedMultiplier.tick();
         this.colorModifier.tick();

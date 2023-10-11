@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
         loggedIn: false,
         username: ""
     };
+    const sendraw= (...bruh) => io.to(socket.id).emit(...bruh);
     const send = (what, info) => io.to(socket.id).emit(what, notepack.encode(info));
     send("heroes", heroes);
 
@@ -97,6 +98,7 @@ io.on("connection", (socket) => {
         map.getLevel(0).entities.push(entity);
         socketIDToEntity.set(socket.id, entity);
         send("startGame", notepack.encode(toString(`${entity.id}`)));
+        sendraw("chat", `[server] Welcome, ${preLoginInformation[socket.id].username}.`)
     });
 
     socket.on("inputs", (i) => {
@@ -109,6 +111,10 @@ io.on("connection", (socket) => {
 
     socket.on("chatrec", (msg) => {
         if (!socketIDToEntity.has(socket.id)) {
+            return;
+        }
+        if (msg.length < 1 || msg.length > 200) {
+            sendraw("chat", `[server] Message too short / too long.`)
             return;
         }
         msg = msg.replace("<", "");
@@ -136,6 +142,7 @@ setInterval(() => {
     for (let [sid, entity] of socketIDToEntity) {
         entity.processKeyMovement();
         io.to(sid).emit("yourPos", notepack.encode({x: entity.x, y: entity.y}));
+        //console.log(entity.parent.getInfo())
         io.to(sid).emit("levelInfo", notepack.encode(entity.parent.getInfo()));
         io.to(sid).emit("heroInfo", notepack.encode(entity.hero.toJSON()))
     }

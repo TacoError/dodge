@@ -3,6 +3,7 @@ const Map = require("./map.js");
 const Level = require("./level.js");
 const Regular = require("../entities/enemies/regular.js");
 const mathUtils = require("../utils/mathUtils.js");
+const SlowerEnemy = require("../entities/enemies/slower");
 
 class MapsManager {
 
@@ -22,6 +23,12 @@ class MapsManager {
                     if (enemy["type"] == "regular") {
                         for (let i = 0; i <= enemy["amount"]; i++) {
                             level.entities.push(new Regular(level, mathUtils.randomIntFromInterval(150, w - 150), mathUtils.randomIntFromInterval(0, h), enemy["radius"], enemy["speed"]));
+                        }
+                        continue;
+                    }
+                    if (enemy["type"] == "slower") {
+                        for (let i = 0; i <= enemy["amount"]; i++) {
+                            level.entities.push(new SlowerEnemy(level, mathUtils.randomIntFromInterval(150, w - 150), mathUtils.randomIntFromInterval(0, h), enemy["radius"], enemy["speed"], enemy["slowerRadius"]))
                         }
                         continue;
                     }

@@ -49,7 +49,7 @@ document.getElementById("chatInput").addEventListener("keydown", (e) => {
     if (e.key == "Enter") {
         socket.emit("chatrec", document.getElementById("chatInput").value);
         document.getElementById("chatInput").value = "";
-        blurAll();
+        //blurAll();
     }
 })
 socket.on("heroInfo", (e) => {
