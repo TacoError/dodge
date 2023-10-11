@@ -34,10 +34,17 @@ class RegularEnemy extends Enemy {
         }
     }
 
-    repel() {
-        this.vx = -this.vx;
-        this.vy = -this.vy;
+    repel(from) {
+        const dx = this.x - from.x;
+        const dy = this.y - from.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const nx = dx / distance;
+        const ny = dy / distance;
+        const dotProduct = this.vx * nx + this.vy * ny;
+        this.vx -= 2 * dotProduct * nx;
+        this.vy -= 2 * dotProduct * ny;
     }
+    
 
 };
 

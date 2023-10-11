@@ -16,3 +16,30 @@ body {
     grid-template-columns: 1fr 1fr;
     
 }
+
+#in-game {
+    display: none;
+}
+
+#chat {
+    width: 250px;
+    height: 200px;
+    outline: 1px black solid;
+    background-color: rgba(220,220,220,0.3);
+    position: absolute;
+    font-size: 12px;
+}
+
+#chats {
+    height: 170px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#chatInput {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:98%;
+}

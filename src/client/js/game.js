@@ -1,7 +1,13 @@
-
+console.log("This frontend is almost as bad as the backend, why are you even looking.")
 let canvas, ctx;
 let myEntityInfo = {};
 let myPos = {x: 0, y: 0};
+socket.on("chat", (msg) => {
+
+    let inc = document.getElementById("chats").innerHTML;
+    inc += `<br/>${msg}`;
+    document.getElementById("chats").innerHTML = inc;
+});
 socket.on("yourPos", (e) => {
      myPos = notepack.decode(e);
  })
@@ -18,6 +24,13 @@ socket.on("levelInfo", (e) => {
 });
 let down = {};
 window.addEventListener("keydown", (e) => {
+    if (e.key == "Enter" && document.activeElement === document.body) {
+        document.getElementById("chatInput").focus();
+        return; 
+    }
+    if (document.activeElement !== document.body) {
+        return;
+    }
     down[e.key.toLowerCase()] = true;
     socket.emit("inputs", notepack.encode(Object.keys(down)));
 })
@@ -26,6 +39,19 @@ window.addEventListener("keyup", (e) => {
     socket.emit("inputs", notepack.encode(Object.keys(down)));
 });
 let heroInfo = {};
+function blurAll(){
+    var tmp = document.createElement("input");
+    document.body.appendChild(tmp);
+    tmp.focus();
+    document.body.removeChild(tmp);
+   }
+document.getElementById("chatInput").addEventListener("keydown", (e) => {
+    if (e.key == "Enter") {
+        socket.emit("chatrec", document.getElementById("chatInput").value);
+        document.getElementById("chatInput").value = "";
+        blurAll();
+    }
+})
 socket.on("heroInfo", (e) => {
     heroInfo = notepack.decode(e);
     if (heroInfo.r1 < 1) {
@@ -110,6 +136,7 @@ function startGame() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     document.body.appendChild(canvas);
+    document.getElementById("in-game").style.display = "block";
     animationLoop();
 }
 

@@ -3,7 +3,7 @@ const SAT = require("sat");
 
 class Level {
 
-    constructor(parent, width, height, num, entities = []) {
+    constructor(parent, width, height, num, entities = [], isVictoryLevel = false) {
         this.parent = parent;
         this.num = num;
         this.width = width;
@@ -17,6 +17,7 @@ class Level {
             new SAT.Box(new SAT.Vector(width, -50), 50, height + 100).toPolygon(),
             new SAT.Box(new SAT.Vector(-50, height), width + 100, 50).toPolygon()
         ];
+        this.isVictoryLevel = isVictoryLevel;
     }
 
     removeEntity(entity) {
@@ -75,7 +76,8 @@ class Level {
             w: this.width,
             h: this.height,
             e: entityDataList,
-            n: this.num
+            n: this.num,
+            iv: this.isVictoryLevel
         };
     }
 

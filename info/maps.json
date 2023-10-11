@@ -5,6 +5,7 @@
             {
                 "width": 2500,
                 "height": 500,
+                "isVictory": false,
                 "enemies": [
                     {
                         "type": "regular",
@@ -17,6 +18,7 @@
             {
                 "width": 2500,
                 "height": 500,
+                "isVictory": false,
                 "enemies": [
                     {
                         "type": "regular",

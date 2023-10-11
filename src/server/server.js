@@ -106,9 +106,29 @@ io.on("connection", (socket) => {
         }
         socketIDToEntity.get(socket.id).inputs = d;
     });
+
+    socket.on("chatrec", (msg) => {
+        if (!socketIDToEntity.has(socket.id)) {
+            return;
+        }
+        msg = msg.replace("<", "");
+        msg = msg.replace(">", "");
+        const name = socketIDToEntity.get(socket.id).text;
+        io.emit("chat", `${name}: ${msg}`);
+    });
+
+    socket.on("disconnect", () => {
+        if (!socketIDToEntity.has(socket.id)) {
+            return;
+        }
+        const e = socketIDToEntity.get(socket.id);
+        e.parent.removeEntity(e);
+        socketIDToEntity.delete(socket.id);
+    });
+
 });
 
-console.log(`Server listening at :${port}`);
+console.log(`Server listening at http://localhost:${port}`);
 
 setInterval(() => {
     MapManager.tick();

@@ -12,8 +12,7 @@ class Morpher extends Hero {
         }
         const ent = this.entity;
         for (const e of ent.parent.getEntitiesWithin(ent.x, ent.y, 350)) {
-            e.repel();
-            e.colorModifier.setModifier("green", 40);
+            e.repel(ent);
         }
         this.setCooldown("0");
     }
@@ -25,7 +24,7 @@ class Morpher extends Hero {
         const ent = this.entity;
         for (const e of ent.parent.getEntitiesWithin(ent.x, ent.y, 350)) {
             e.radiusModifier.addModifier(-5, 40 * 3);
-            e.colorModifier.setModifier("lightgreen", 40);
+            e.colorModifier.setModifier("lightgreen", 40 * 3);
         }
         this.setCooldown("1");
     }

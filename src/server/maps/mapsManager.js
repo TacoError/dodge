@@ -17,7 +17,7 @@ class MapsManager {
             for (const levelInfo of mapInfo["levels"]) {
                 const w = levelInfo["width"];
                 const h = levelInfo["height"];
-                const level = new Level(map, w, h, leveln, []);
+                const level = new Level(map, w, h, leveln, [], levelInfo["isVictory"]);
                 for (const enemy of levelInfo["enemies"]) {
                     if (enemy["type"] == "regular") {
                         for (let i = 0; i <= enemy["amount"]; i++) {

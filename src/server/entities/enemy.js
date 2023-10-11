@@ -15,7 +15,7 @@ class Enemy extends Entity {
 
     doAutomaticMove() {}
 
-    repel() {}
+    repel(from) {}
 
 };
 
