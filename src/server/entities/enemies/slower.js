@@ -58,7 +58,7 @@ class SlowerAttachment extends Enemy {
 
     constructor(parent, pradius) {
         super(parent, 0, 0, pradius, "rgba(255,0,0,0.5)", 0);
-        console.log(`set with radius ${pradius}`)
+        //console.log(`set with radius ${pradius}`)
         this.radiusModifier.initial = pradius;
         this.isModifierEnemy = true;
     }

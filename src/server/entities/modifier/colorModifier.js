@@ -4,7 +4,7 @@ class ColorModifier {
         this.initialColor = initialColor;
         this.modifierColor = "";
         this.modifierLength = 0;
-        this.initialColorHold = initialColor;
+        this.initialColorHold = initialColor; // used by heroes like magmax when i need to revert, most likely a better way to do this.
     }
 
     tick() {

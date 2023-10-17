@@ -23,7 +23,7 @@ class Entity {
         this.io = io;
         this.socket = socket;
         this.hero = hero;
-        this.speedMultiplier = new SpeedModifier(); // speed modifier goes by multiplication
+        this.speedMultiplier = new SpeedModifier(); // speed modifier goes by multiplication. (it didn't used to, i'm sure something needs to change somewhere still)
         this.deadFor = 0;
         this.colorModifier = new ColorModifier(color);
         this.immobile = false;
@@ -42,7 +42,7 @@ class Entity {
             c: this.colorModifier.getColor(),
             t: this.text,
             r: this.radiusModifier.currentRadius,
-            //i: this.id,
+            //i: this.id, this wouldnt send for some reason (use for linear interp in future)
             d: this.deadFor
         };
     }

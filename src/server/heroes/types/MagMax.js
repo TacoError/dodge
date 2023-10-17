@@ -10,7 +10,7 @@ class MagMax extends Hero {
         if (!this.isCoolDownUpFor("0")) {
             return;
         }
-        this.entity.speedMultiplier.addModifier(1, 100);
+        this.entity.speedMultiplier.addModifier(1.5, 100);
         this.setCooldown("0");
         this.entity.colorModifier.setModifier("orange", 100);
     }
@@ -21,7 +21,7 @@ class MagMax extends Hero {
         }
         if (this.entity.immobile) {
             this.entity.immobile = false;
-            this.entity.canTakeDamage = false;
+            this.entity.canTakeDamage = true;
             this.entity.colorModifier.initialColor = this.entity.colorModifier.initialColorHold;
             this.setCooldown("1");
             return;
