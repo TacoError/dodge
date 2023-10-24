@@ -33,6 +33,7 @@ class Entity {
         this.lastDirection = {x: 0, y: 0};
         this.radiusModifier = new RadiusModifier(radius);
         this.isModifierEnemy = false;
+        this.outline = true;
     }
 
     toJSON() {
@@ -43,7 +44,8 @@ class Entity {
             t: this.text,
             r: this.radiusModifier.currentRadius,
             //i: this.id, this wouldnt send for some reason (use for linear interp in future)
-            d: this.deadFor
+            d: this.deadFor,
+            o: this.outline
         };
     }
 

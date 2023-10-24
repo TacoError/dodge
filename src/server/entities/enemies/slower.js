@@ -61,6 +61,7 @@ class SlowerAttachment extends Enemy {
         //console.log(`set with radius ${pradius}`)
         this.radiusModifier.initial = pradius;
         this.isModifierEnemy = true;
+        this.outline = false;
     }
 
     doAutomaticMove() {

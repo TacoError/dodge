@@ -95,6 +95,7 @@ io.on("connection", (socket) => {
         entity.hero = new (namesToClass[hero])(entity);
         entity.color = entity.hero.color;
         entity.colorModifier.initialColor = entity.hero.color;
+        entity.outline = false;
         map.getLevel(0).entities.push(entity);
         socketIDToEntity.set(socket.id, entity);
         send("startGame", notepack.encode(toString(`${entity.id}`)));

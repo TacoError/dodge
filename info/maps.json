@@ -17,8 +17,27 @@
                         "type": "slower",
                         "speed": 5,
                         "amount": 5,
-                        "radius": 15,
-                        "slowerRadius": 60
+                        "radius": 7,
+                        "slowerRadius": 75
+                    },
+                    {
+                        "type": "squiggler",
+                        "speed": 5,
+                        "amount": 10,
+                        "radius": 20
+                    },
+                    {
+                        "type": "homing",
+                        "speed": 5,
+                        "amount": 10,
+                        "radius": 20,
+                        "homingRange": 100
+                    },
+                    {
+                        "type": "wallFollower",
+                        "amount": 10,
+                        "radius": 25,
+                        "speed": 7
                     }
                 ]
             },

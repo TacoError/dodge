@@ -3,7 +3,6 @@ let canvas, ctx;
 let myEntityInfo = {};
 let myPos = {x: 0, y: 0};
 socket.on("chat", (msg) => {
-
     let inc = document.getElementById("chats").innerHTML;
     inc += `<br/>${msg}`;
     document.getElementById("chats").innerHTML = inc;
@@ -99,10 +98,10 @@ function animationLoop() {
             }
             if (e.d > 0) {
                 circle(ctx, e.x, e.y, e.r, "gray", true);
-                text(ctx, e.x, e.y, `${e.t} (DEAD ${e.d / 40})`, e.r);
+                text(ctx, e.x, e.y, `${e.t} (DEAD ${Math.round(e.d / 40)})`, e.r);
                 continue;
             }
-            circle(ctx, e.x, e.y, e.r, e.c, e.t == "" ? true : false);
+            circle(ctx, e.x, e.y, e.r, e.c, e.o);
             text(ctx, e.x, e.y, e.t, e.r);
         }  
     }
@@ -113,7 +112,7 @@ function animationLoop() {
         if (myEntityInfo.d > 0) {
             
             circle(ctx, canvas.width / 2, canvas.height / 2,  myEntityInfo.r, "gray", myEntityInfo.t == "" ? true : false);
-            text(ctx, canvas.width / 2, canvas.height / 2, `${myEntityInfo.t} (DEAD ${myEntityInfo.d / 40})`, myEntityInfo.r);
+            text(ctx, canvas.width / 2, canvas.height / 2, `${myEntityInfo.t} (DEAD ${Math.round(myEntityInfo.d / 40)})`, myEntityInfo.r);
         } else {
             circle(ctx, canvas.width / 2, canvas.height / 2,  myEntityInfo.r, myEntityInfo.c, myEntityInfo.t == "" ? true : false);
             text(ctx, canvas.width / 2, canvas.height / 2, myEntityInfo.t, myEntityInfo.r);
